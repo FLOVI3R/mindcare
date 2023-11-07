@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 TextEditingController nameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
-TextEditingController rPasswordController = TextEditingController();
+TextEditingController cPasswordController = TextEditingController();
 
 class Register extends StatelessWidget {
   const Register({super.key});
@@ -18,7 +18,7 @@ class Register extends StatelessWidget {
 }
 
 Future<void> register(
-    String name, String email, String password, String rPassword) async {
+    String name, String email, String password, String cPassword) async {
   try {
     Response response = await post(
         Uri.parse('https://mindcare.allsites.es/public/api/register'),
@@ -26,7 +26,7 @@ Future<void> register(
           'name': name,
           'email': email,
           'password': password,
-          'rPassword': rPassword
+          'c_password': cPassword
         });
     if (response.statusCode == 200) {
       print('Usuario registrado');
@@ -96,7 +96,7 @@ class RegisterPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
-              controller: rPasswordController,
+              controller: cPasswordController,
               obscureText: true,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -106,8 +106,11 @@ class RegisterPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              print('Ha iniciado sesión!');
-              Navigator.pushReplacementNamed(context, "admin");
+              register(
+                  nameController.toString(),
+                  emailController.toString(),
+                  passwordController.toString(),
+                  cPasswordController.toString());
             },
             child: Text('REGISTRAR USUARIO'),
           ),
