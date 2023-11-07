@@ -19,11 +19,12 @@ Future<void> login(String email, String password) async {
   try {
     Response response = await post(
         Uri.parse('https://mindcare.allsites.es/public/api/login'),
-        body: {'email': email, 'password': password});
+        body: {'email': email, 'password': password},
+        headers: {'Accept': '*/*'});
     if (response.statusCode == 200) {
       print('Se ha iniciado sesión');
     } else {
-      print('error');
+      print(response.statusCode);
     }
   } catch (e) {
     print(e.toString());
@@ -77,7 +78,8 @@ class LoginPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              login(emailController.toString(), passwordController.toString());
+              login(emailController.text.toString(),
+                  passwordController.text.toString());
             },
             child: Text('INICIAR SESIÓN'),
           ),

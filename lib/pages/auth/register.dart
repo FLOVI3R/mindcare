@@ -20,18 +20,23 @@ class Register extends StatelessWidget {
 Future<void> register(
     String name, String email, String password, String cPassword) async {
   try {
+    final uri = Uri.parse('https://mindcare.allsites.es/public/api/register');
     Response response = await post(
-        Uri.parse('https://mindcare.allsites.es/public/api/register'),
-        body: {
-          'name': name,
-          'email': email,
-          'password': password,
-          'c_password': cPassword
-        });
+      uri,
+      body: {
+        'name': name,
+        'email': email,
+        'password': password,
+        'c_password': password
+      },
+      headers: {'Accept': '*/*'},
+    );
     if (response.statusCode == 200) {
       print('Usuario registrado');
+      print(response.body);
     } else {
-      print('error');
+      print(response.statusCode);
+      print(response.body);
     }
   } catch (e) {
     print(e.toString());
@@ -107,10 +112,10 @@ class RegisterPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               register(
-                  nameController.toString(),
-                  emailController.toString(),
-                  passwordController.toString(),
-                  cPasswordController.toString());
+                  nameController.text.toString(),
+                  emailController.text.toString(),
+                  passwordController.text.toString(),
+                  cPasswordController.text.toString());
             },
             child: Text('REGISTRAR USUARIO'),
           ),
