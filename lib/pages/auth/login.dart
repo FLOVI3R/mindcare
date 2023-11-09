@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:mindcare/models/user.dart';
 
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
@@ -17,14 +18,20 @@ class Login extends StatelessWidget {
 
 Future<void> login(String email, String password) async {
   try {
+    final uri = Uri.parse('https://mindcare.allsites.es/public/api/login');
     Response response = await post(
-        Uri.parse('https://mindcare.allsites.es/public/api/login'),
-        body: {'email': email, 'password': password},
-        headers: {'Accept': '*/*'});
+      uri,
+      body: {
+        'email': email,
+        'password': password,
+      },
+      headers: {'Accept': '*/*'},
+    );
     if (response.statusCode == 200) {
       print('Se ha iniciado sesión');
     } else {
       print(response.statusCode);
+      print(response.body);
     }
   } catch (e) {
     print(e.toString());
