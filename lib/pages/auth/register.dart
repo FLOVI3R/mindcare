@@ -55,17 +55,9 @@ class RegisterPage extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              print('HOME!');
-              Navigator.pushReplacementNamed(context, "/");
-            },
-            child: Text('HOME'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print('LOGIN!');
               Navigator.pushReplacementNamed(context, "login");
             },
-            child: Text('LOGIN'),
+            child: Text('Iniciar Sesión'),
           ),
           Padding(
             padding: EdgeInsets.all(10),

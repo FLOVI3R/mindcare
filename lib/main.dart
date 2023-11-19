@@ -18,43 +18,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // Definimos la ruta inicial
-      initialRoute: '/',
+      initialRoute: 'login',
       // Definimos la lista de rutas en nuestra aplicación
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => MyHomePage(),
         'login': (BuildContext context) => LoginPage(),
         'register': (BuildContext context) => RegisterPage(),
         'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
         'confirmAccount': (BuildContext context) => ConfirmAccountPage(),
         'user': (BuildContext context) => UserMainMenuPage()
       },
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Text('MINDCARE APP'),
-          ElevatedButton(
-            onPressed: () {
-              print('LOGIN!');
-              Navigator.pushReplacementNamed(context, "login");
-            },
-            child: Text('LOGIN'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print('REGISTER!');
-              Navigator.pushReplacementNamed(context, "register");
-            },
-            child: Text('REGISTER'),
-          ),
-        ],
-      ),
     );
   }
 }

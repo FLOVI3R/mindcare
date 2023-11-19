@@ -65,17 +65,9 @@ class LoginPage extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              print('HOME!');
-              Navigator.pushReplacementNamed(context, "/");
-            },
-            child: Text('HOME'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print('REGISTER!');
               Navigator.pushReplacementNamed(context, "register");
             },
-            child: Text('REGISTER'),
+            child: Text('Registrar Cuenta'),
           ),
           Padding(
             padding: EdgeInsets.all(10),
