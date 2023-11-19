@@ -49,7 +49,7 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
-        title: Text('Register Page'),
+        title: Text('Registro de Usuario'),
       ),
       body: Column(
         children: [

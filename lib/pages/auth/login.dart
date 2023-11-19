@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:mindcare/models/user.dart';
+import 'package:mindcare/models/loggedUser.dart';
+import 'package:mindcare/pages/admin/admin_dashboard.dart';
 
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
@@ -16,9 +19,10 @@ class Login extends StatelessWidget {
   }
 }
 
-Future<void> login(String email, String password) async {
+Future<void> login(BuildContext context, email, String password) async {
   try {
     final uri = Uri.parse('https://mindcare.allsites.es/public/api/login');
+    final navigator = Navigator.of(context);
     Response response = await post(
       uri,
       body: {
@@ -28,7 +32,18 @@ Future<void> login(String email, String password) async {
       headers: {'Accept': '*/*'},
     );
     if (response.statusCode == 200) {
-      print('Se ha iniciado sesión');
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      loggedUser logUser = loggedUser.fromJson(data['data']);
+      if (logUser.type == 'a') {
+        navigator.push(MaterialPageRoute(
+            builder: (context) => AdminDashBoardPage(admin: logUser)));
+      } else {
+        navigator.pushReplacementNamed('user', arguments: logUser);
+      }
+    } else if (response.statusCode == 404) {
+      print(response.statusCode);
+      print(response.body);
+      navigator.pushReplacementNamed('confirmAccount');
     } else {
       print(response.statusCode);
       print(response.body);
@@ -43,7 +58,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
+        title: Text('Inicio de Sesión'),
         backgroundColor: Colors.purple,
       ),
       body: Column(
@@ -85,7 +100,7 @@ class LoginPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              login(emailController.text.toString(),
+              login(context, emailController.text.toString(),
                   passwordController.text.toString());
             },
             child: Text('INICIAR SESIÓN'),

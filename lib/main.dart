@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mindcare/pages/admin/admin_dashboard.dart';
+import 'package:mindcare/pages/auth/confirmaccount.dart';
 import 'package:mindcare/pages/auth/forgotpassword.dart';
 import 'package:mindcare/pages/auth/login.dart';
 import 'package:mindcare/pages/auth/register.dart';
+import 'package:mindcare/pages/user/user_mainMenu.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +25,8 @@ class MyApp extends StatelessWidget {
         'login': (BuildContext context) => LoginPage(),
         'register': (BuildContext context) => RegisterPage(),
         'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
-        'admin': (BuildContext context) => AdminDashBoardPage(),
+        'confirmAccount': (BuildContext context) => ConfirmAccountPage(),
+        'user': (BuildContext context) => UserMainMenuPage()
       },
     );
   }

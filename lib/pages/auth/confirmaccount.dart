@@ -1,8 +1,7 @@
-// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
-class UserMainMenu extends StatelessWidget {
-  const UserMainMenu({super.key});
+class ConfirmAccount extends StatelessWidget {
+  const ConfirmAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,15 +11,17 @@ class UserMainMenu extends StatelessWidget {
   }
 }
 
-class UserMainMenuPage extends StatelessWidget {
+class ConfirmAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Main Menu'),
+        title: Text('Confirmar cuenta de usuario'),
         backgroundColor: Colors.purple,
       ),
       body: Column(children: [
+        Text(
+            'Para iniciar sesión debe primero confirmar su email y que un administrador le valide la cuenta.'),
         ElevatedButton(
           onPressed: () {
             Navigator.pushReplacementNamed(context, "/");
