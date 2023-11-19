@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart';
 import 'package:mindcare/models/loggedUser.dart';
-
 import '../../models/user.dart';
 import 'admin_updateUser.dart';
 
@@ -25,6 +24,24 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
   void initState() {
     super.initState();
     userList = getUserList();
+  }
+
+  void showFlashError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void showFlashMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.purple,
+      ),
+    );
   }
 
   Future<List<User>> getUserList() async {
@@ -62,52 +79,143 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
   }
 
   Future<void> _deleteUser(int idUser) async {
-    final uri = Uri.parse('https://mindcare.allsites.es/public/api/deleted');
-    Response response = await post(
-      uri,
-      body: {'id': idUser.toString()},
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.admin.token}'
-      },
-    );
-    if (response.statusCode != 200) {
-      print(response.body);
-    }
+    showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            title: const Text('Confirmar eliminación de usuario'),
+            content:
+                const Text('¿Está seguro de querer eliminar este usuario?'),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    final uri = Uri.parse(
+                        'https://mindcare.allsites.es/public/api/deleted');
+                    Response response = await post(
+                      uri,
+                      body: {'id': idUser.toString()},
+                      headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ${widget.admin.token}'
+                      },
+                    );
+                    if (response.statusCode != 200) {
+                      // ignore: use_build_context_synchronously
+                      showFlashError(
+                          context, 'No se ha podido borrar el usuario.');
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      showFlashMessage(
+                          context, 'Usuario eliminado correctamente.');
+                    }
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Eliminar')),
+              TextButton(
+                  onPressed: () {
+                    // Close the dialog
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancelar'))
+            ],
+          );
+        });
   }
 
   Future<void> _activateUser(int idUser) async {
-    final uri = Uri.parse('https://mindcare.allsites.es/public/api/activate');
-    Response response = await post(
-      uri,
-      body: {'id': idUser.toString()},
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.admin.token}'
-      },
-    );
-    if (response.statusCode == 200) {
-      setState(() {});
-    }
+    showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            title: const Text('Confirmar activación usuario'),
+            content: const Text('¿Esta seguro de querer activar este usuario?'),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    final uri = Uri.parse(
+                        'https://mindcare.allsites.es/public/api/activate');
+                    Response response = await post(
+                      uri,
+                      body: {'id': idUser.toString()},
+                      headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ${widget.admin.token}'
+                      },
+                    );
+                    if (response.statusCode != 200) {
+                      // ignore: use_build_context_synchronously
+                      showFlashError(
+                          context, 'No se ha podido activar el usuario.');
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      showFlashMessage(
+                          context, 'Usuario activado correctamente.');
+                    }
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Activar')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancelar'))
+            ],
+          );
+        });
   }
 
   Future<void> _deactivateUser(int idUser) async {
-    final uri = Uri.parse('https://mindcare.allsites.es/public/api/deactivate');
-    Response response = await post(
-      uri,
-      body: {'id': idUser.toString()},
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.admin.token}'
-      },
-    );
+    showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            title: const Text('Confirmar desactivación de usuario'),
+            content:
+                const Text('¿Está seguro de querer desactivar este usuario?'),
+            actions: [
+              // The "Yes" button
+              TextButton(
+                  onPressed: () async {
+                    final uri = Uri.parse(
+                        'https://mindcare.allsites.es/public/api/deactivate');
+                    Response response = await post(
+                      uri,
+                      body: {'id': idUser.toString()},
+                      headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ${widget.admin.token}'
+                      },
+                    );
+                    if (response.statusCode != 200) {
+                      // ignore: use_build_context_synchronously
+                      showFlashError(
+                          context, 'No se ha podido desactivar el usuario.');
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      showFlashMessage(
+                          context, 'Usuario desactivado correctamente.');
+                    }
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Desactivar')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancelar'))
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menú Principal ${widget.admin.name}'),
+        title: Text('ADMIN | Menú Principal | ${widget.admin.name}'),
         backgroundColor: Colors.purple,
       ),
       body: Center(
@@ -158,9 +266,11 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
                           enabled: true,
                           closeOnScroll: true,
                           child: ListTile(
-                            title: Text(snapshot.data![index].name),
-                            subtitle:
-                                Text(snapshot.data![index].actived.toString()),
+                            leading: Text(snapshot.data![index].id.toString()),
+                            title: Text(
+                                'Nombre: ${snapshot.data![index].name} | Email: ${snapshot.data![index].email}'),
+                            subtitle: Text(
+                                'Activado: ${snapshot.data![index].actived} | Email confirmado: ${snapshot.data![index].email_confirmed}'),
                           ));
                     },
                   );

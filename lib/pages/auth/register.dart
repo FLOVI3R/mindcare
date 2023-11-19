@@ -17,8 +17,18 @@ class Register extends StatelessWidget {
   }
 }
 
-Future<void> register(
-    String name, String email, String password, String cPassword) async {
+void showFlashError(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
+
+Future<void> register(BuildContext context, String name, String email,
+    String password, String cPassword) async {
+  final navigator = Navigator.of(context);
   try {
     final uri = Uri.parse('https://mindcare.allsites.es/public/api/register');
     Response response = await post(
@@ -32,11 +42,11 @@ Future<void> register(
       headers: {'Accept': '*/*'},
     );
     if (response.statusCode == 200) {
-      print('Usuario registrado');
-      print(response.body);
+      navigator.pushNamed('login');
     } else {
-      print(response.statusCode);
-      print(response.body);
+      // ignore: use_build_context_synchronously
+      showFlashError(
+          context, 'Se ha producido un error al registrar el usuario');
     }
   } catch (e) {
     print(e.toString());
@@ -104,6 +114,7 @@ class RegisterPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               register(
+                  context,
                   nameController.text.toString(),
                   emailController.text.toString(),
                   passwordController.text.toString(),

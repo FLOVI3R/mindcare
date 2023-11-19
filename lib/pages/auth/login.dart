@@ -19,6 +19,15 @@ class Login extends StatelessWidget {
   }
 }
 
+void showFlashError(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
+
 Future<void> login(BuildContext context, email, String password) async {
   try {
     final uri = Uri.parse('https://mindcare.allsites.es/public/api/login');
@@ -31,8 +40,8 @@ Future<void> login(BuildContext context, email, String password) async {
       },
       headers: {'Accept': '*/*'},
     );
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
       loggedUser logUser = loggedUser.fromJson(data['data']);
       if (logUser.type == 'a') {
         navigator.push(MaterialPageRoute(
@@ -40,13 +49,15 @@ Future<void> login(BuildContext context, email, String password) async {
       } else {
         navigator.pushReplacementNamed('user', arguments: logUser);
       }
-    } else if (response.statusCode == 404) {
-      print(response.statusCode);
-      print(response.body);
-      navigator.pushReplacementNamed('confirmAccount');
     } else {
-      print(response.statusCode);
-      print(response.body);
+      if (data['data'].toString() == "{error: User don't activated}" ||
+          data['data'].toString() == "{error: Email don't confirmed}") {
+        navigator.pushReplacementNamed('confirmAccount');
+      } else {
+        // ignore: use_build_context_synchronously
+        showFlashError(context,
+            'Se ha producido un error al iniciar sesión, compruebe si sus credenciales están correctas y vuelva a intentarlo.');
+      }
     }
   } catch (e) {
     print(e.toString());
@@ -63,12 +74,6 @@ class LoginPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, "register");
-            },
-            child: Text('Registrar Cuenta'),
-          ),
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
@@ -99,10 +104,10 @@ class LoginPage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, "forgotPassword");
+              Navigator.pushReplacementNamed(context, "register");
             },
             child: Text(
-                '¿Ha olvidado su contraseña? Haga click aquí para cambiarla.'),
+                '¿Todavía no tiene una cuenta? Haga click aquí para crear una.'),
           ),
         ],
       ),

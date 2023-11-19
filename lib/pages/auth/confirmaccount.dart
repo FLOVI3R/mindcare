@@ -22,12 +22,11 @@ class ConfirmAccountPage extends StatelessWidget {
       body: Column(children: [
         Text(
             'Para iniciar sesión debe primero confirmar su email y que un administrador le valide la cuenta.'),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, "/");
-          },
-          child: Text('SALIR'),
-        ),
+        TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'login');
+            },
+            child: Text('SALIR'))
       ]),
     );
   }

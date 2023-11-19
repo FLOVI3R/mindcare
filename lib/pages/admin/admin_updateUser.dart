@@ -13,6 +13,24 @@ class AdminUpdateUserPage extends StatefulWidget {
   State<StatefulWidget> createState() => _AdminUpdateUserState();
 }
 
+void showFlashError(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
+
+void showFlashMessage(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.purple,
+    ),
+  );
+}
+
 Future<void> updateUser(
     int idUser, String tokenApi, String newName, BuildContext context) async {
   final navigator = Navigator.of(context);
@@ -29,6 +47,13 @@ Future<void> updateUser(
         'Authorization': 'Bearer $tokenApi'
       },
     );
+    if (response.statusCode != 200) {
+      // ignore: use_build_context_synchronously
+      showFlashError(context, 'No se ha podido editar el usuario.');
+    } else {
+      // ignore: use_build_context_synchronously
+      showFlashMessage(context, 'Usuario editado con éxito.');
+    }
     navigator.pop();
   } catch (e) {
     print(e.toString());
@@ -45,12 +70,6 @@ class _AdminUpdateUserState extends State<AdminUpdateUserPage> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, "/");
-            },
-            child: Text('<-'),
-          ),
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
