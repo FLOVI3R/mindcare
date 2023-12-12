@@ -45,28 +45,33 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
   }
 
   Future<List<User>> getUserList() async {
-    final uri = Uri.parse('https://mindcare.allsites.es/public/api/users');
-    Response response = await get(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.admin.token}'
-      },
-    );
-    final data = jsonDecode(response.body)['data'];
-    List<User> userList = [];
-    for (var user in data) {
-      if (user['deleted'] == 0) {
-        User u = User(
-            id: user['id'],
-            name: user['name'],
-            email: user['email'],
-            type: user['type'],
-            email_confirmed: user['email_confirmed'],
-            actived: user['actived'],
-            deleted: user['deleted']);
-        userList.add(u);
+    try {
+      final uri = Uri.parse('https://mindcare.allsites.es/public/api/users');
+      Response response = await get(
+        uri,
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${widget.admin.token}'
+        },
+      );
+      final data = jsonDecode(response.body)['data'];
+      List<User> newUserList = [];
+      for (var user in data) {
+        if (user['deleted'] == 0) {
+          User u = User(
+              id: user['id'],
+              name: user['name'],
+              email: user['email'],
+              type: user['type'],
+              email_confirmed: user['email_confirmed'],
+              actived: user['actived'],
+              deleted: user['deleted']);
+          newUserList.add(u);
+        }
       }
+      return newUserList;
+    } catch (e) {
+      print(e.toString());
     }
     return userList;
   }
@@ -89,24 +94,29 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
             actions: [
               TextButton(
                   onPressed: () async {
-                    final uri = Uri.parse(
-                        'https://mindcare.allsites.es/public/api/deleted');
-                    Response response = await post(
-                      uri,
-                      body: {'id': idUser.toString()},
-                      headers: {
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ${widget.admin.token}'
-                      },
-                    );
-                    if (response.statusCode != 200) {
-                      // ignore: use_build_context_synchronously
-                      showFlashError(
-                          context, 'No se ha podido borrar el usuario.');
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      showFlashMessage(
-                          context, 'Usuario eliminado correctamente.');
+                    try {
+                      final uri = Uri.parse(
+                          'https://mindcare.allsites.es/public/api/deleted');
+                      Response response = await post(
+                        uri,
+                        body: {'id': idUser.toString()},
+                        headers: {
+                          'Accept': 'application/json',
+                          'Authorization': 'Bearer ${widget.admin.token}'
+                        },
+                      );
+                      if (response.statusCode != 200) {
+                        print(response.body);
+                        // ignore: use_build_context_synchronously
+                        showFlashError(
+                            context, 'No se ha podido borrar el usuario.');
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        showFlashMessage(
+                            context, 'Usuario eliminado correctamente.');
+                      }
+                    } catch (e) {
+                      print(e.toString());
                     }
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
@@ -114,7 +124,6 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
                   child: const Text('Eliminar')),
               TextButton(
                   onPressed: () {
-                    // Close the dialog
                     Navigator.of(context).pop();
                   },
                   child: const Text('Cancelar'))
@@ -133,24 +142,28 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
             actions: [
               TextButton(
                   onPressed: () async {
-                    final uri = Uri.parse(
-                        'https://mindcare.allsites.es/public/api/activate');
-                    Response response = await post(
-                      uri,
-                      body: {'id': idUser.toString()},
-                      headers: {
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ${widget.admin.token}'
-                      },
-                    );
-                    if (response.statusCode != 200) {
-                      // ignore: use_build_context_synchronously
-                      showFlashError(
-                          context, 'No se ha podido activar el usuario.');
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      showFlashMessage(
-                          context, 'Usuario activado correctamente.');
+                    try {
+                      final uri = Uri.parse(
+                          'https://mindcare.allsites.es/public/api/activate');
+                      Response response = await post(
+                        uri,
+                        body: {'id': idUser.toString()},
+                        headers: {
+                          'Accept': 'application/json',
+                          'Authorization': 'Bearer ${widget.admin.token}'
+                        },
+                      );
+                      if (response.statusCode != 200) {
+                        // ignore: use_build_context_synchronously
+                        showFlashError(
+                            context, 'No se ha podido activar el usuario.');
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        showFlashMessage(
+                            context, 'Usuario activado correctamente.');
+                      }
+                    } catch (e) {
+                      print(e.toString());
                     }
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
@@ -178,24 +191,28 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
               // The "Yes" button
               TextButton(
                   onPressed: () async {
-                    final uri = Uri.parse(
-                        'https://mindcare.allsites.es/public/api/deactivate');
-                    Response response = await post(
-                      uri,
-                      body: {'id': idUser.toString()},
-                      headers: {
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ${widget.admin.token}'
-                      },
-                    );
-                    if (response.statusCode != 200) {
-                      // ignore: use_build_context_synchronously
-                      showFlashError(
-                          context, 'No se ha podido desactivar el usuario.');
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      showFlashMessage(
-                          context, 'Usuario desactivado correctamente.');
+                    try {
+                      final uri = Uri.parse(
+                          'https://mindcare.allsites.es/public/api/deactivate');
+                      Response response = await post(
+                        uri,
+                        body: {'id': idUser.toString()},
+                        headers: {
+                          'Accept': 'application/json',
+                          'Authorization': 'Bearer ${widget.admin.token}'
+                        },
+                      );
+                      if (response.statusCode != 200) {
+                        // ignore: use_build_context_synchronously
+                        showFlashError(
+                            context, 'No se ha podido desactivar el usuario.');
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        showFlashMessage(
+                            context, 'Usuario desactivado correctamente.');
+                      }
+                    } catch (e) {
+                      print(e.toString());
                     }
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();

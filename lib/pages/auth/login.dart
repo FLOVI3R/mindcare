@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:mindcare/models/loggedUser.dart';
 import 'package:mindcare/pages/admin/admin_dashboard.dart';
+import 'package:mindcare/pages/user/user_diary.dart';
 
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
@@ -47,7 +48,8 @@ Future<void> login(BuildContext context, email, String password) async {
         navigator.push(MaterialPageRoute(
             builder: (context) => AdminDashBoardPage(admin: logUser)));
       } else {
-        navigator.pushReplacementNamed('user', arguments: logUser);
+        navigator.push(MaterialPageRoute(
+            builder: (context) => UserDiaryPage(user: logUser)));
       }
     } else {
       if (data['data'].toString() == "{error: User don't activated}" ||
