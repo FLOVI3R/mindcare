@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mindcare/pages/auth/confirmaccount.dart';
 import 'package:mindcare/pages/auth/login.dart';
 import 'package:mindcare/pages/auth/register.dart';
-import 'package:mindcare/pages/user/user_diary.dart';
-import 'package:mindcare/pages/user/user_mainMenu.dart';
 
 void main() {
   runApp(MyApp());

@@ -162,6 +162,11 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
                         showFlashMessage(
                             context, 'Usuario activado correctamente.');
                       }
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => widget));
                     } catch (e) {
                       print(e.toString());
                     }
@@ -211,6 +216,11 @@ class _AdminDashBoardState extends State<AdminDashBoardPage> {
                         showFlashMessage(
                             context, 'Usuario desactivado correctamente.');
                       }
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => widget));
                     } catch (e) {
                       print(e.toString());
                     }
