@@ -6,6 +6,8 @@ import 'package:mindcare/models/loggedUser.dart';
 import 'package:mindcare/pages/admin/admin_dashboard.dart';
 import 'package:mindcare/pages/user/user_diary.dart';
 
+import '../user/user_mindfulness.dart';
+
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 
@@ -49,7 +51,7 @@ Future<void> login(BuildContext context, email, String password) async {
             builder: (context) => AdminDashBoardPage(admin: logUser)));
       } else {
         navigator.push(MaterialPageRoute(
-            builder: (context) => UserDiaryPage(user: logUser)));
+            builder: (context) => UserMindFulnessPage(user: logUser)));
       }
     } else {
       if (data['data'].toString() == "{error: User don't activated}" ||

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:mindcare/models/Diary.dart';
 import 'package:mindcare/models/loggedUser.dart';
+import 'package:mindcare/pages/user/user_mindfulness.dart';
 
 TextEditingController descriptionController = TextEditingController();
 
@@ -149,6 +150,37 @@ class _UserDiaryState extends State<UserDiaryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.purple,
+              ),
+              child: Text('Menú de navegación'),
+            ),
+            ListTile(
+              title: const Text('Diario'),
+              selectedColor: Colors.white,
+              selectedTileColor: Colors.purple,
+              selected: true,
+              onTap: () {},
+            ),
+            ListTile(
+              title: const Text('MindFulness'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserMindFulnessPage(user: widget.user)),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text('USUARIO | DIARIO | ${widget.user.name}'),
         backgroundColor: Colors.purple,
